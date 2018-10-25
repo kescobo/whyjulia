@@ -7,16 +7,22 @@ A new programming language *specifically* made for scientists and engineers
 
 Note: ~5 years ago at MIT
 
+----
+
+## A bit about me:
+
+- PhD in Immunology (no coding prior to 2014)
+- Tried julia as my first language when it was `v0.3`
+- During 1st postdoc, built a python package to look for HGT
+- Over the past 1.5 years, work almost entirely in julia ([Microbiome.jl](https://github.com/BioJulia/Microbiome.jl))
 
 ---
 
-# Two-language problem
+# Why Julia?
 
-Note: to build complex compiled programs OR to have fast dynamic programs, you have 2 languages involved
+---
 
-----
-
-## Building compiled programs
+## The two language problem
 
 1. Brain-storm in a dynamic language for algorithm exploration and testing.
 2. Deliver a performant final-version in a compiled language.
@@ -55,10 +61,15 @@ Note: Julia is mostly coded in Julia!
 
 ![](https://raw.githubusercontent.com/johnfgibson/whyjulia/8b7617de701a25387e40dc00ee20ad99f4695c47/figs/ks_cpu_vs_lines_1024.png)
 
-Note: 
-1. I wrote a flexible and fast ray tracer in Julia. It's 100 LOC. 
-2. The study "Mash: fast genome and metagenome distance estimation using MinHash" used MinHashing -- a fast algorithm for comparing two sets of things -- for DNA sequence comparison. They implemented it in C for speed. Someone else made python bindings to the compiled C version. But someone implemented it directly in Julia and made it super fast in under 100 lines of very readable code.
+Note:
+"Mash: fast genome and metagenome distance estimation using MinHash" used MinHashing -- a fast algorithm for comparing two sets of things -- for DNA sequence comparison. They implemented it in C for speed. Someone else made python bindings to the compiled C version. But I implemented it directly in Julia and made it super fast in under 100 lines of very readable code.
 
+----
+
+## Case Study: PDE Solvers
+
+![](difeq_table.png)
+[ref](http://www.stochasticlifestyle.com/comparison-differential-equation-solver-suites-matlab-r-julia-python-c-fortran/): Christopher Rakaukas
 
 ---
 
@@ -110,7 +121,7 @@ julia> ↺(c, θ) = [cos(θ) -sin(θ); sin(θ) cos(θ)]*c
 julia> [1,0] ↺ π/2
 2-element Array{Float64,1}:
  0.0
- 1.0   
+ 1.0
 ```
 
 Note: This opens the door to tons of cool syntax.
@@ -131,30 +142,43 @@ uconvert(d, t)
 
 Note: if you use m, cm, feet, degrees, radians, etc
 
-
 ---
 
 # Missing
 
 The concept of `missing` and `NaN` is treated correctly:
 ```julia
-julia> NaN + 1         = NaN
+julia> NaN + 1          = NaN
 
-julia> missing + 1     = missing
+julia> missing + 1      = missing
 
-julia> true | NaN        ERROR!
+julia> true |  NaN        ERROR!
 
-julia> true | missing  = true
+julia> true | missing   = true
 
-julia> false | missing = missing
+julia> false | missing  = missing
 
-julia> true & missing  = missing
+julia> true & missing   = missing
 
-julia> false & missing = false
+julia> false & missing  = false
 ```
 
 Note: Consider that no other language has managed to get this concept of missing data correctly into their code.
 
+----
+
+## Compare to nothing
+
+"The software engineer's Null"
+```julia
+julia> isa(nothing, Nothing)    = true
+
+julia> nothing + 1              ERROR!
+
+julia> true | nothing           ERROR!
+
+julia> false & nothing          ERROR!
+```
 
 ---
 
@@ -169,14 +193,33 @@ Note: you can call Julia home without losing all of your furniture in the move.
 
 ---
 
-# Some of my favourite things
+# Reproducible science
 
-* [AxisArrays](https://github.com/JuliaArrays/AxisArrays.jl): Arrays where each dimension can have a named axis with ranged values.
+- New package system keeps track of the state of your entire stack
+- Version control on `Manifest` ensures reproduction of environment
+    - Just `git clone` and `instantiate`
+- [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl) for large datasets
+
+## Some of my favorite (software) things
+
+* [BioJulia org](https://github.com/BioJulia): Lots of stuff for (efficiently) working with biological data.
 * [Images](https://github.com/JuliaImages/Images.jl) & [Colors](https://github.com/JuliaGraphics/Colors.jl): Treat colors as a unit.
-* `github` integration: your code and its documentation accessible to everyone, automatically tested on multiple architectures, with coverage reports. 
-
+* `github` integration:
+    - your code and its documentation accessible to everyone
+    - automatically tested on multiple architectures, with coverage reports.
 
 Note: Many many more, but it's outside the scope of this presentation, CI
+
+---
+
+## My favorite thing: The community
+
+* Core developers and community are always hashing stuff out. Focus on
+    - correctness
+    - clarity
+    - usability
+* [Discourse](https://github.com/BioJulia) (forum), [Slack](https://julialang.slack.com/) (chat), GitHub
+- I adapted this slideshow from [Yakir Luc Gagnon](https://github.com/yakir12) from Duke U. ([discourse thread](https://discourse.julialang.org/t/preaching-julia-to-biologists/15058))
 
 ---
 
@@ -187,6 +230,7 @@ Note: Many many more, but it's outside the scope of this presentation, CI
 * Highly specialized and niche solutions and tools
 * Free from hardware requirements
 * No "black boxes", everything is within reach
+* Razor thin gap between user and developer
 
 
 Note: This is true for Python and R, but not MATLAB. Julia got git integration really well.
@@ -196,7 +240,7 @@ Note: This is true for Python and R, but not MATLAB. Julia got git integration r
 # Disadvantages
 Mostly it's just too new…
 
-Note: nothing is perfect. 
+Note: nothing is perfect.
 
 ----
 
@@ -204,13 +248,13 @@ Note: nothing is perfect.
 
 * Ecosystems (e.g. packages, IDEs, debugger) not as mature as in other environments.
 * Some of the more specialized libraries are missing.
-* Harder to Google for answers.
+* Harder to Google for answers (but Slack!)
 
 Note: IDE (Integrated Development Environment). Maybe in 6 months or so the environment will solidify completely.
 
 ----
 
-## Still working out all the kinks 
+## Still working out all the kinks
 
 * Loading some packages is still a bit slow.
 * Plotting works but hasn't settled yet.
@@ -218,13 +262,11 @@ Note: IDE (Integrated Development Environment). Maybe in 6 months or so the envi
 
 ----
 
-## General purpose
+## Julia is probably not the best choice for
 
-* Need statistics? `R`
-* Need vectorized operations on matrices? `MATLAB`
-* `Julia` (like `Python`) is more general-purpose → can be harder to find what you're looking for.
-
-Note: apropos statistics, Douglas Bates, the developer of the `lme4` R package for GLMMs switched to Julia.
+* Web development.
+* "Hello, World!" scripts (or short scripts in general).
+* People who expect speed w/o work.
 
 ---
 
@@ -232,7 +274,7 @@ Note: apropos statistics, Douglas Bates, the developer of the `lme4` R package f
 
 * `Julia` is considered by many one of the best dynamic languages out there.
 * A number of libraries already far out-perform their equivalents in other languages.
-* People come to `Julia` because of its speed, but stay for the type-dispatch system ♥ 
+* People come to `Julia` because of its speed, but stay for the type-dispatch system ♥
 * Suffers from being "too new": might not be suitable for early adopters.
 
 Note: I've started using Julia about 4 years ago and never looked back.
