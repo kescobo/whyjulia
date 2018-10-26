@@ -200,6 +200,9 @@ Note: you can call Julia home without losing all of your furniture in the move.
     - Just `git clone` and `instantiate`
 - [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl) for large datasets
 
+
+----
+
 ## Some of my favorite (software) things
 
 * [BioJulia org](https://github.com/BioJulia): Lots of stuff for (efficiently) working with biological data.
@@ -210,7 +213,7 @@ Note: you can call Julia home without losing all of your furniture in the move.
 
 Note: Many many more, but it's outside the scope of this presentation, CI
 
----
+----
 
 ## My favorite thing: The community
 
